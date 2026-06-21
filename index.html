@@ -107,66 +107,20 @@
   .hstat .n{font-size:22px; font-weight:700; color:var(--text);}
   .hstat .l{font-size:11px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.06em;}
 
-  /* live feed mock */
-  .feed{
-    position:relative; aspect-ratio:4/3; background:#000;
-    border:1px solid var(--line); border-radius:6px; overflow:hidden;
-    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+  /* hero screenshot (real dashboard) */
+  .hero-shot{
+    position:relative; border:1px solid var(--line); border-radius:8px;
+    overflow:hidden; box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+    background:#000;
   }
-  .feed::before{
-    content:''; position:absolute; inset:0; z-index:3; pointer-events:none;
-    background:repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 3px);
+  .hero-shot img{display:block; width:100%; height:auto;}
+  .hero-shot-tag{
+    position:absolute; top:14px; left:14px; z-index:2;
+    font-family:var(--mono); font-size:10px; letter-spacing:0.06em;
+    color:var(--accent); background:rgba(11,14,17,0.75);
+    border:1px solid rgba(94,234,212,0.3); border-radius:3px;
+    padding:5px 10px; backdrop-filter:blur(4px);
   }
-  .feed-bg{
-    position:absolute; inset:0;
-    background:
-      radial-gradient(ellipse at 30% 20%, rgba(94,234,212,0.05), transparent 50%),
-      linear-gradient(180deg, #14181d 0%, #0a0c0e 100%);
-  }
-  .feed-grid{
-    position:absolute; inset:0;
-    background-image:
-      linear-gradient(rgba(94,234,212,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(94,234,212,0.04) 1px, transparent 1px);
-    background-size:24px 24px;
-  }
-  .shelf{
-    position:absolute; left:14%; right:14%; top:30%; bottom:18%;
-    border:1.5px dashed rgba(94,234,212,0.55); border-radius:3px;
-  }
-  .shelf-lbl{
-    position:absolute; top:-22px; left:0;
-    font-family:var(--mono); font-size:10px; color:var(--accent);
-    letter-spacing:0.05em;
-  }
-  .silhouette{
-    position:absolute; left:48%; top:34%; width:70px; height:120px;
-    transform:translateX(-50%);
-  }
-  .silhouette svg{width:100%; height:100%; opacity:0.85;}
-  .bbox{
-    position:absolute; left:50%; top:32%; width:88px; height:140px;
-    transform:translateX(-50%);
-    border:1.5px solid var(--alert); border-radius:2px;
-    animation:bboxpulse 1.8s ease-in-out infinite;
-  }
-  @keyframes bboxpulse{
-    0%,100%{box-shadow:0 0 0 0 rgba(242,84,91,0.4);} 50%{box-shadow:0 0 0 6px rgba(242,84,91,0);}
-  }
-  .bbox-tag{
-    position:absolute; top:-20px; left:0;
-    font-family:var(--mono); font-size:9.5px; color:var(--alert);
-    background:rgba(242,84,91,0.12); padding:2px 5px; border-radius:2px;
-    white-space:nowrap;
-  }
-  .feed-hud{
-    position:absolute; inset:0; z-index:2; padding:14px;
-    font-family:var(--mono); font-size:10px; color:rgba(232,234,237,0.55);
-    display:flex; flex-direction:column; justify-content:space-between;
-  }
-  .feed-hud .row{display:flex; justify-content:space-between;}
-  .rec{display:flex; align-items:center; gap:5px; color:var(--alert);}
-  .rec .d{width:6px; height:6px; border-radius:50%; background:var(--alert); animation:pulse 1s ease-in-out infinite;}
 
   /* ---------- sections ---------- */
   section{padding:90px 6vw; border-bottom:1px solid var(--line);}
@@ -410,29 +364,9 @@
     </div>
   </div>
   
-  <div class="feed">
-    <div class="feed-bg"></div>
-    <div class="feed-grid"></div>
-    <div class="shelf"><span class="shelf-lbl">SHELF_ROI_01</span></div>
-    <div class="silhouette">
-      <svg viewBox="0 0 70 120" fill="none">
-        <circle cx="35" cy="16" r="11" fill="rgba(232,234,237,0.5)"/>
-        <path d="M20 35 Q35 28 50 35 L54 90 Q35 98 16 90 Z" fill="rgba(232,234,237,0.4)"/>
-        <rect x="10" y="90" width="14" height="28" rx="4" fill="rgba(232,234,237,0.35)"/>
-        <rect x="46" y="90" width="14" height="28" rx="4" fill="rgba(232,234,237,0.35)"/>
-      </svg>
-    </div>
-    <div class="bbox"><span class="bbox-tag">PERSON 0.87</span></div>
-    <div class="feed-hud">
-      <div class="row">
-        <span>CAM_01 · FRONTAL</span>
-        <span class="rec"><span class="d"></span>REC</span>
-      </div>
-      <div class="row">
-        <span>YOLO11s-pose · 480×480</span>
-        <span id="clock">--:--:--</span>
-      </div>
-    </div>
+  <div class="hero-shot">
+    <img src="images/live-monitor.png" alt="Live Monitor di Securetail con detection YOLO pose attiva in tempo reale">
+    <div class="hero-shot-tag">LIVE MONITOR — DETECTION ATTIVA</div>
   </div>
 </section>
 
@@ -440,10 +374,10 @@
   <div class="section-head">
     <div class="eyebrow"><span class="bar"></span>IL SISTEMA IN AZIONE</div>
     <h2>Dashboard reale, non un mockup</h2>
-    <p class="section-desc">Schermate prese direttamente dall'ambiente di sviluppo durante un test live. Il volto nello screenshot Live Monitor è stato sfocato per privacy — il riquadro grigio è invece il blur automatico applicato dal sistema stesso sopra la ROI rilevata.</p>
+    <p class="section-desc">Altre schermate prese direttamente dall'ambiente di sviluppo durante un test live.</p>
   </div>
   <div class="shot-grid">
-    <div class="shot-card">
+    <div class="shot-card shot-wide">
       <img src="images/dashboard-home.png" alt="Home Dashboard di Securetail con indicatori chiave e calendario eventi">
       <div class="shot-caption">
         <span class="label">Home Dashboard</span>
@@ -457,18 +391,11 @@
         <span class="desc">Affidabilità sistema e distribuzione per gravità</span>
       </div>
     </div>
-    <div class="shot-card shot-wide">
-      <img src="images/live-monitor.png" alt="Live Monitor con detection YOLO pose attiva e bounding box sullo scaffale">
-      <div class="shot-caption">
-        <span class="label">Live Monitor</span>
-        <span class="desc">Detection YOLO pose attiva, ROI scaffale disegnata, persona tracciata in tempo reale</span>
-      </div>
-    </div>
-    <div class="shot-card shot-wide">
+    <div class="shot-card">
       <img src="images/events.png" alt="Lista eventi e clip con filtri per gravità e azioni bulk">
       <div class="shot-caption">
         <span class="label">Alerts e Clip</span>
-        <span class="desc">Cronologia eventi con filtri, etichettatura Falso Allarme / Vero Furto e azioni bulk</span>
+        <span class="desc">Cronologia eventi, filtri ed etichettatura Falso Allarme / Vero Furto</span>
       </div>
     </div>
   </div>
@@ -737,17 +664,6 @@
     <a href="#">Telefono: 3792056985</a>
   </div>
 </footer>
-
-<script>
-  function tick(){
-    const el = document.getElementById('clock');
-    if(!el) return;
-    const d = new Date();
-    el.textContent = d.toTimeString().slice(0,8);
-  }
-  tick();
-  setInterval(tick, 1000);
-</script>
 
 </body>
 </html>

@@ -354,7 +354,28 @@
     .ct-row{grid-template-columns:1fr 1fr 1fr; font-size:11.5px;}
     .ct-row > div{padding:10px 10px;}
     .sm-diagram{padding:24px 18px;}
+    .shot-grid{grid-template-columns:1fr;}
   }
+</style>
+<style>
+  /* screenshot gallery */
+  .shot-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:20px;
+  }
+  .shot-grid .shot-wide{grid-column:1 / -1;}
+  .shot-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    overflow:hidden;
+  }
+  .shot-card img{
+    display:block; width:100%; height:auto;
+    border-bottom:1px solid var(--line);
+  }
+  .shot-caption{
+    padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .shot-caption .label{font-family:var(--mono); font-size:12.5px; color:var(--text); font-weight:600;}
+  .shot-caption .desc{font-size:12.5px; color:var(--text-faint); text-align:right;}
 </style>
 </head>
 <body>
@@ -363,6 +384,7 @@
   <div class="topbar">
     <div class="brand"><span class="dot"></span>SECURETAIL — CASE STUDY</div>
     <nav>
+      <a href="#screenshot">Screenshot</a>
       <a href="#architettura">Architettura</a>
       <a href="#pipeline">Pipeline AI</a>
       <a href="#statemachine">State Machine</a>
@@ -413,6 +435,45 @@
     </div>
   </div>
 </section>
+
+<section id="screenshot">
+  <div class="section-head">
+    <div class="eyebrow"><span class="bar"></span>IL SISTEMA IN AZIONE</div>
+    <h2>Dashboard reale, non un mockup</h2>
+    <p class="section-desc">Schermate prese direttamente dall'ambiente di sviluppo durante un test live. Il volto nello screenshot Live Monitor è stato sfocato per privacy — il riquadro grigio è invece il blur automatico applicato dal sistema stesso sopra la ROI rilevata.</p>
+  </div>
+  <div class="shot-grid">
+    <div class="shot-card">
+      <img src="images/dashboard-home.png" alt="Home Dashboard di Securetail con indicatori chiave e calendario eventi">
+      <div class="shot-caption">
+        <span class="label">Home Dashboard</span>
+        <span class="desc">Indicatori chiave + calendario eventi giornaliero</span>
+      </div>
+    </div>
+    <div class="shot-card">
+      <img src="images/dashboard-charts.png" alt="Grafici di affidabilità sistema e distribuzione gravità eventi">
+      <div class="shot-caption">
+        <span class="label">Statistiche</span>
+        <span class="desc">Affidabilità sistema e distribuzione per gravità</span>
+      </div>
+    </div>
+    <div class="shot-card shot-wide">
+      <img src="images/live-monitor.png" alt="Live Monitor con detection YOLO pose attiva e bounding box sullo scaffale">
+      <div class="shot-caption">
+        <span class="label">Live Monitor</span>
+        <span class="desc">Detection YOLO pose attiva, ROI scaffale disegnata, persona tracciata in tempo reale</span>
+      </div>
+    </div>
+    <div class="shot-card shot-wide">
+      <img src="images/events.png" alt="Lista eventi e clip con filtri per gravità e azioni bulk">
+      <div class="shot-caption">
+        <span class="label">Alerts e Clip</span>
+        <span class="desc">Cronologia eventi con filtri, etichettatura Falso Allarme / Vero Furto e azioni bulk</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="stack">
   <div class="section-head">
     <div class="eyebrow"><span class="bar"></span>STACK TECNOLOGICO</div>

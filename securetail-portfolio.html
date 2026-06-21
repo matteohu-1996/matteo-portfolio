@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Securetail — Matteo Hu · Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0E11;
+    --panel:#13171C;
+    --panel-2:#181D23;
+    --line:#242B33;
+    --text:#E8EAED;
+    --text-dim:#8A94A0;
+    --text-faint:#5B6471;
+    --accent:#5EEAD4;
+    --accent-dim:#2A4F4B;
+    --alert:#F2545B;
+    --alert-dim:#4A2226;
+    --mono:'JetBrains Mono', monospace;
+    --sans:'Inter', sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent); color:#0B0E11;}
+  a{color:inherit;}
+
+  .noise{
+    position:fixed; inset:0; pointer-events:none; z-index:1;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 6vw;
+    background:rgba(11,14,17,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{
+    font-family:var(--mono); font-size:13px; letter-spacing:0.08em;
+    display:flex; align-items:center; gap:10px; color:var(--text);
+  }
+  .brand .dot{
+    width:7px; height:7px; border-radius:50%; background:var(--accent);
+    box-shadow:0 0 8px var(--accent);
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;} 50%{opacity:0.35;}
+  }
+  .topbar nav{display:flex; gap:28px; font-size:13px; color:var(--text-dim); font-family:var(--mono);}
+  .topbar nav a{text-decoration:none; transition:color .2s;}
+  .topbar nav a:hover{color:var(--accent);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    padding:100px 6vw 80px;
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px;
+    align-items:center;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero-eyebrow{
+    font-family:var(--mono); font-size:12px; color:var(--accent);
+    letter-spacing:0.12em; text-transform:uppercase;
+    margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .hero-eyebrow .bar{width:24px; height:1px; background:var(--accent);}
+  h1.hero-title{
+    font-size:clamp(2.4rem, 5vw, 3.6rem);
+    font-weight:800; line-height:1.05; letter-spacing:-0.02em;
+    margin-bottom:22px;
+  }
+  h1.hero-title .hl{color:var(--accent);}
+  .hero-desc{
+    font-size:17px; color:var(--text-dim); max-width:46ch; margin-bottom:32px;
+  }
+  .hero-cta{display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono); font-size:13px; letter-spacing:0.03em;
+    padding:13px 22px; border-radius:3px; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:all .2s;
+  }
+  .btn-primary{background:var(--accent); color:#0B0E11; font-weight:600;}
+  .btn-primary:hover{background:#7FF3DF; transform:translateY(-1px);}
+  .btn-ghost{border:1px solid var(--line); color:var(--text-dim);}
+  .btn-ghost:hover{border-color:var(--accent); color:var(--accent);}
+
+  .hero-stats{display:flex; gap:30px; margin-top:42px;}
+  .hstat{font-family:var(--mono);}
+  .hstat .n{font-size:22px; font-weight:700; color:var(--text);}
+  .hstat .l{font-size:11px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.06em;}
+
+  /* live feed mock */
+  .feed{
+    position:relative; aspect-ratio:4/3; background:#000;
+    border:1px solid var(--line); border-radius:6px; overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+  .feed::before{
+    content:''; position:absolute; inset:0; z-index:3; pointer-events:none;
+    background:repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 3px);
+  }
+  .feed-bg{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(94,234,212,0.05), transparent 50%),
+      linear-gradient(180deg, #14181d 0%, #0a0c0e 100%);
+  }
+  .feed-grid{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(94,234,212,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(94,234,212,0.04) 1px, transparent 1px);
+    background-size:24px 24px;
+  }
+  .shelf{
+    position:absolute; left:14%; right:14%; top:30%; bottom:18%;
+    border:1.5px dashed rgba(94,234,212,0.55); border-radius:3px;
+  }
+  .shelf-lbl{
+    position:absolute; top:-22px; left:0;
+    font-family:var(--mono); font-size:10px; color:var(--accent);
+    letter-spacing:0.05em;
+  }
+  .silhouette{
+    position:absolute; left:48%; top:34%; width:70px; height:120px;
+    transform:translateX(-50%);
+  }
+  .silhouette svg{width:100%; height:100%; opacity:0.85;}
+  .bbox{
+    position:absolute; left:50%; top:32%; width:88px; height:140px;
+    transform:translateX(-50%);
+    border:1.5px solid var(--alert); border-radius:2px;
+    animation:bboxpulse 1.8s ease-in-out infinite;
+  }
+  @keyframes bboxpulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(242,84,91,0.4);} 50%{box-shadow:0 0 0 6px rgba(242,84,91,0);}
+  }
+  .bbox-tag{
+    position:absolute; top:-20px; left:0;
+    font-family:var(--mono); font-size:9.5px; color:var(--alert);
+    background:rgba(242,84,91,0.12); padding:2px 5px; border-radius:2px;
+    white-space:nowrap;
+  }
+  .feed-hud{
+    position:absolute; inset:0; z-index:2; padding:14px;
+    font-family:var(--mono); font-size:10px; color:rgba(232,234,237,0.55);
+    display:flex; flex-direction:column; justify-content:space-between;
+  }
+  .feed-hud .row{display:flex; justify-content:space-between;}
+  .rec{display:flex; align-items:center; gap:5px; color:var(--alert);}
+  .rec .d{width:6px; height:6px; border-radius:50%; background:var(--alert); animation:pulse 1s ease-in-out infinite;}
+
+  /* ---------- sections ---------- */
+  section{padding:90px 6vw; border-bottom:1px solid var(--line);}
+  .section-head{margin-bottom:48px; max-width:60ch;}
+  .eyebrow{
+    font-family:var(--mono); font-size:11px; color:var(--accent);
+    letter-spacing:0.12em; text-transform:uppercase; margin-bottom:14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow .bar{width:18px; height:1px; background:var(--accent);}
+  h2{font-size:clamp(1.6rem,3vw,2.2rem); font-weight:700; letter-spacing:-0.01em; margin-bottom:14px;}
+  .section-desc{color:var(--text-dim); font-size:15.5px; max-width:58ch;}
+
+  /* architecture cards */
+  .arch-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+  .arch-card{background:var(--panel); padding:32px 28px;}
+  .arch-num{font-family:var(--mono); font-size:11px; color:var(--text-faint); margin-bottom:18px;}
+  .arch-card h3{font-size:17px; margin-bottom:10px; display:flex; align-items:center; gap:10px;}
+  .arch-card p{color:var(--text-dim); font-size:14px; line-height:1.6;}
+  .tag-row{display:flex; gap:6px; flex-wrap:wrap; margin-top:16px;}
+  .tag{
+    font-family:var(--mono); font-size:10.5px; color:var(--accent);
+    background:var(--accent-dim); padding:3px 8px; border-radius:3px;
+  }
+
+  /* pipeline / signature */
+  .pipeline{
+    display:grid; grid-template-columns:1fr auto 1fr; gap:0; align-items:stretch;
+    margin-top:10px;
+  }
+  .pl-stage{
+    background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    padding:30px;
+  }
+  .pl-stage.l1{border-color:var(--line);}
+  .pl-stage.l2{border-color:rgba(94,234,212,0.3); background:linear-gradient(180deg, rgba(94,234,212,0.04), transparent 60%);}
+  .pl-arrow{
+    display:flex; align-items:center; justify-content:center; padding:0 22px;
+    color:var(--text-faint); font-family:var(--mono); font-size:11px;
+  }
+  .pl-arrow svg{width:40px; height:20px;}
+  .pl-stage .stage-eyebrow{
+    font-family:var(--mono); font-size:10.5px; color:var(--text-faint);
+    letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px;
+  }
+  .pl-stage.l2 .stage-eyebrow{color:var(--accent);}
+  .pl-stage h4{font-size:18px; margin-bottom:12px;}
+  .pl-stage p{color:var(--text-dim); font-size:14px; margin-bottom:18px; line-height:1.6;}
+  .metric-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .metric{
+    background:var(--panel-2); border:1px solid var(--line); border-radius:5px;
+    padding:10px 12px;
+  }
+  .metric .v{font-family:var(--mono); font-size:15px; color:var(--accent); font-weight:600;}
+  .metric .k{font-size:10.5px; color:var(--text-faint); margin-top:2px;}
+  .gate-note{
+    margin-top:22px; padding:14px 18px; background:var(--panel-2); border-left:2px solid var(--accent);
+    border-radius:0 5px 5px 0; font-size:13.5px; color:var(--text-dim);
+  }
+  .gate-note b{color:var(--text);}
+
+  /* pipeline 3-stage variant */
+  .pipeline-3{grid-template-columns:1fr auto 1fr auto 1fr;}
+  .pl-stage.l3{border-color:rgba(242,84,91,0.28); background:linear-gradient(180deg, rgba(242,84,91,0.05), transparent 60%);}
+  .pl-stage.l3 .stage-eyebrow{color:var(--alert);}
+
+  /* state machine diagram */
+  .sm-diagram{
+    display:flex; align-items:center; flex-wrap:wrap; gap:0;
+    background:var(--panel); border:1px solid var(--line); border-radius:8px;
+    padding:34px 28px; margin-top:10px;
+  }
+  .sm-node{
+    font-family:var(--mono); font-size:13px; font-weight:600; color:var(--text);
+    background:var(--panel-2); border:1px solid var(--line); border-radius:20px;
+    padding:10px 18px; white-space:nowrap;
+  }
+  .sm-node.alert{color:var(--alert); border-color:rgba(242,84,91,0.4); background:var(--alert-dim);}
+  .sm-link{color:var(--text-faint); padding:0 10px; font-family:var(--mono);}
+  .sm-reset{
+    margin-top:16px; font-size:13.5px; color:var(--text-dim);
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .sm-reset-tag{
+    font-family:var(--mono); font-size:11px; color:var(--accent);
+    background:var(--accent-dim); padding:3px 9px; border-radius:3px; flex-shrink:0;
+  }
+
+  .trigger-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:8px;
+    overflow:hidden; margin-top:28px;
+  }
+  .trigger-card{background:var(--panel); padding:22px 22px;}
+  .trigger-card.filter{background:var(--panel-2);}
+  .trigger-id{font-family:var(--mono); font-size:12.5px; color:var(--accent); margin-bottom:10px; font-weight:600;}
+  .trigger-card.filter .trigger-id{color:var(--text-dim);}
+  .trigger-card p{font-size:13.5px; color:var(--text-dim); line-height:1.6;}
+
+  /* test grid */
+  .test-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+  .test-metric{background:var(--panel); padding:26px 24px;}
+  .tv{font-family:var(--mono); font-size:20px; font-weight:700; color:var(--accent); margin-bottom:8px;}
+  .tk{font-size:13px; color:var(--text-dim); line-height:1.5;}
+
+  /* limits */
+  .limit-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px;}
+  .limit-card{
+    background:var(--panel); border:1px solid var(--line); border-left:2px solid var(--text-faint);
+    border-radius:0 8px 8px 0; padding:24px 26px;
+  }
+  .limit-card h4{font-size:15.5px; margin-bottom:8px; color:var(--text);}
+  .limit-card p{font-size:13.5px; color:var(--text-dim); line-height:1.6;}
+
+  /* compare table */
+  .compare-table{
+    border:1px solid var(--line); border-radius:8px; overflow:hidden;
+    font-family:var(--mono); font-size:13.5px;
+  }
+  .ct-row{
+    display:grid; grid-template-columns:1fr 1.1fr 1.1fr;
+    border-bottom:1px solid var(--line);
+  }
+  .ct-row:last-child{border-bottom:none;}
+  .ct-row > div{padding:14px 18px; color:var(--text-dim);}
+  .ct-row > div:first-child{color:var(--text-faint); font-size:12px;}
+  .ct-head{background:var(--panel-2);}
+  .ct-head > div{color:var(--text); font-weight:600;}
+  .ct-row:not(.ct-head){background:var(--panel);}
+  .hl-cell{color:var(--accent) !important; font-weight:600;}
+
+  /* roles */
+  .roles{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+  .role-card{background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:30px;}
+  .role-card h3{font-family:var(--mono); font-size:14px; letter-spacing:0.05em; margin-bottom:18px; display:flex; align-items:center; gap:10px;}
+  .role-card.admin h3{color:var(--accent);}
+  .role-card.viewer h3{color:var(--text-dim);}
+  .role-card ul{list-style:none;}
+  .role-card li{
+    font-size:14px; color:var(--text-dim); padding:9px 0; border-bottom:1px solid var(--line);
+    display:flex; align-items:start; gap:10px;
+  }
+  .role-card li:last-child{border-bottom:none;}
+  .role-card li::before{content:'—'; color:var(--text-faint); flex-shrink:0;}
+
+  /* stack */
+  .stack-row{display:flex; flex-wrap:wrap; gap:10px;}
+  .stack-pill{
+    font-family:var(--mono); font-size:12.5px; color:var(--text);
+    background:var(--panel); border:1px solid var(--line); border-radius:20px;
+    padding:8px 16px; display:flex; align-items:center; gap:8px;
+  }
+  .stack-pill .sq{width:6px; height:6px; background:var(--accent);}
+
+  /* troubleshooting */
+  .trouble-list{display:flex; flex-direction:column; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+  .trouble-item{background:var(--panel); padding:22px 26px;}
+  .trouble-q{
+    font-family:var(--mono); font-size:13.5px; color:var(--alert); margin-bottom:8px;
+    display:flex; gap:10px;
+  }
+  .trouble-a{font-size:14px; color:var(--text-dim); padding-left:24px; line-height:1.6;}
+  
+  footer{
+    padding:50px 6vw; display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:16px;
+  }
+  footer .f-left{font-family:var(--mono); font-size:12px; color:var(--text-faint);}
+  footer .f-right{display:flex; gap:20px; font-size:13px;}
+  footer a{text-decoration:none; color:var(--text-dim); transition:color .2s;}
+  footer a:hover{color:var(--accent);}
+  
+  @media (max-width:880px){
+    .hero{grid-template-columns:1fr; padding-top:70px;}
+    .arch-grid{grid-template-columns:1fr;}
+    .pipeline{grid-template-columns:1fr;}
+    .pipeline-3{grid-template-columns:1fr;}
+    .pl-arrow{transform:rotate(90deg); padding:14px 0;}
+    .roles{grid-template-columns:1fr;}
+    .topbar nav{display:none;}
+    .hero-stats{flex-wrap:wrap;}
+    .trigger-grid{grid-template-columns:1fr;}
+    .test-grid{grid-template-columns:1fr;}
+    .limit-grid{grid-template-columns:1fr;}
+    .ct-row{grid-template-columns:1fr 1fr 1fr; font-size:11.5px;}
+    .ct-row > div{padding:10px 10px;}
+    .sm-diagram{padding:24px 18px;}
+  }
+</style>
+</head>
+<body>
+  <div class="noise"></div>
+  
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span>SECURETAIL — CASE STUDY</div>
+    <nav>
+      <a href="#architettura">Architettura</a>
+      <a href="#pipeline">Pipeline AI</a>
+      <a href="#statemachine">State Machine</a>
+    <a href="#test">Test</a>
+    <a href="#limiti">Limiti</a>
+  </nav>
+</div>
+
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow"><span class="bar"></span>PROGETTO Sperimentale DI STAGE  — COMPUTER VISION</div>
+    <h1 class="hero-title">Securetail - <br> un sistema di video-sorveglianza anti-taccheggio</h1>
+    <p class="hero-desc">Securetail è un sistema di video-sorveglianza intelligente che combina motion detection e pose estimation per generare alert solo quando c'è davvero una persona vicino allo scaffale sorvegliato — non a ogni variazione di luce o movimento d'aria.</p>
+    <div class="hero-cta">
+      <a href="#pipeline" class="btn btn-primary">Vedi la pipeline AI →</a>
+      <a href="#repo" class="btn btn-ghost">Codice sorgente</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><div class="n">280h</div><div class="l">7 settimane full-time</div></div>
+      <div class="hstat"><div class="n">~6000</div><div class="l">righe Python</div></div>
+      <div class="hstat"><div class="n">-85%</div><div class="l">carico CPU col gating</div></div>
+      <div class="hstat"><div class="n">5</div><div class="l">trigger di furto distinti</div></div>
+    </div>
+  </div>
+  
+  <div class="feed">
+    <div class="feed-bg"></div>
+    <div class="feed-grid"></div>
+    <div class="shelf"><span class="shelf-lbl">SHELF_ROI_01</span></div>
+    <div class="silhouette">
+      <svg viewBox="0 0 70 120" fill="none">
+        <circle cx="35" cy="16" r="11" fill="rgba(232,234,237,0.5)"/>
+        <path d="M20 35 Q35 28 50 35 L54 90 Q35 98 16 90 Z" fill="rgba(232,234,237,0.4)"/>
+        <rect x="10" y="90" width="14" height="28" rx="4" fill="rgba(232,234,237,0.35)"/>
+        <rect x="46" y="90" width="14" height="28" rx="4" fill="rgba(232,234,237,0.35)"/>
+      </svg>
+    </div>
+    <div class="bbox"><span class="bbox-tag">PERSON 0.87</span></div>
+    <div class="feed-hud">
+      <div class="row">
+        <span>CAM_01 · FRONTAL</span>
+        <span class="rec"><span class="d"></span>REC</span>
+      </div>
+      <div class="row">
+        <span>YOLO11s-pose · 480×480</span>
+        <span id="clock">--:--:--</span>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="stack">
+  <div class="section-head">
+    <div class="eyebrow"><span class="bar"></span>STACK TECNOLOGICO</div>
+    <h2>Strumenti usati nel progetto</h2>
+  </div>
+  <div class="stack-row">
+    <span class="stack-pill"><span class="sq"></span>Python 3.12</span>
+    <span class="stack-pill"><span class="sq"></span>OpenCV</span>
+    <span class="stack-pill"><span class="sq"></span>Ultralytics YOLO11</span>
+    <span class="stack-pill"><span class="sq"></span>FastAPI</span>
+    <span class="stack-pill"><span class="sq"></span>uvicorn</span>
+    <span class="stack-pill"><span class="sq"></span>Streamlit</span>
+    <span class="stack-pill"><span class="sq"></span>MySQL</span>
+    <span class="stack-pill"><span class="sq"></span>FFmpeg</span>
+  </div>
+</section>
+
+<section id="architettura">
+  <div class="section-head">
+    <div class="eyebrow"><span class="bar"></span>ARCHITETTURA</div>
+    <h2>Tre processi, tre macchine, un flusso video</h2>
+    <p class="section-desc">Il sistema è pensato per un caso reale: la webcam è collegata a un PC qualsiasi nel negozio, mentre il backend e la dashboard girano su un server remoto. I tre moduli comunicano via TCP/FFmpeg e REST API.</p>
+  </div>
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="arch-num">01 · SERVER</div>
+      <h3>Backend</h3>
+      <p>FastAPI + vision engine. Riceve lo stream video, esegue la detection a due livelli, gestisce eventi e persistenza su database.</p>
+      <div class="tag-row"><span class="tag">main.py</span><span class="tag">FastAPI</span><span class="tag">MySQL</span></div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-num">02 · SERVER</div>
+      <h3>Dashboard</h3>
+      <p>Interfaccia Streamlit per il monitoraggio live, la cronologia eventi, la configurazione delle ROI e la gestione permessi utente.</p>
+      <div class="tag-row"><span class="tag">app.py</span><span class="tag">Streamlit</span><span class="tag">RBAC</span></div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-num">03 · CLIENT</div>
+      <h3>Sender</h3>
+      <p>Script cross-platform che gira sul PC con la webcam, la rileva automaticamente e invia il flusso al server via TCP/FFmpeg.</p>
+      <div class="tag-row"><span class="tag">start_camera.py</span><span class="tag">Win/macOS/Linux</span><span class="tag">RTSP-ready</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="pipeline">
+  <div class="section-head">
+    <div class="eyebrow"><span class="bar"></span>IL CUORE TECNICO</div>
+    <h2>Dal pixel al furto: tre stadi di ragionamento</h2>
+    <p class="section-desc">Un classificatore "furto sì/no" su singolo frame non funziona: YOLO non capisce sequenze temporali. La soluzione è una pipeline che sale di livello solo quando necessario, fino a una state machine che ragiona per stati persistenti.</p>
+  </div>
+
+  <div class="pipeline pipeline-3">
+    <div class="pl-stage l1">
+      <div class="stage-eyebrow">Stadio 1 · sempre attivo</div>
+      <h4>Motion Detection</h4>
+      <p>Background subtraction OpenCV. Filtra le scene statiche prima che tocchino qualsiasi rete neurale.</p>
+      <div class="metric-grid">
+        <div class="metric"><div class="v">1800 px²</div><div class="k">area minima movimento</div></div>
+        <div class="metric"><div class="v">400%→50%</div><div class="k">CPU idle misurata</div></div>
+      </div>
+    </div>
+    <div class="pl-arrow"><svg viewBox="0 0 40 20"><line x1="0" y1="10" x2="32" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="24,4 32,10 24,16" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div>
+    <div class="pl-stage l2">
+      <div class="stage-eyebrow">Stadio 2 · si attiva se serve</div>
+      <h4>YOLO Pose + Object</h4>
+      <p>Due modelli paralleli: pose stima keypoint (mani/polsi), object riconosce gli oggetto sullo scaffale. Insieme correlano "questa mano ha preso quella bottiglia".</p>
+      <div class="metric-grid">
+        <div class="metric"><div class="v">0.50</div><div class="k">soglia confidenza persona</div></div>
+        <div class="metric"><div class="v">2 modelli</div><div class="k">pose + object in parallelo</div></div>
+      </div>
+    </div>
+    <div class="pl-arrow"><svg viewBox="0 0 40 20"><line x1="0" y1="10" x2="32" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="24,4 32,10 24,16" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div>
+    <div class="pl-stage l3">
+      <div class="stage-eyebrow">Stadio 3 · decide se è furto</div>
+      <h4>State Machine</h4>
+      <p>5 stati persistenti per persona trackata, non un classificatore a frame singolo. Distingue "prendere e rimettere" da "prendere e nascondere".</p>
+      <div class="metric-grid">
+        <div class="metric"><div class="v">5 stati</div><div class="k">IDLE → SUSPECTED</div></div>
+        <div class="metric"><div class="v">5 trigger</div><div class="k">scenari di furto coperti</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gate-note">
+    <b>Perché conviene:</b> il gating a motion riduce il carico CPU dell'85% circa (misurato: da 400% a 50% in idle su i7), mantenendo il sistema utilizzabile su hardware consumer senza GPU dedicata.
+  </div>
+</section>
+
+<section id="statemachine">
+  <div class="section-head">
+    <div class="eyebrow"><span class="bar"></span>LOGICA DI DECISIONE</div>
+    <h2>Una state machine per persona, non un frame isolato</h2>
+    <p class="section-desc">Ogni persona trackata nella scena ha un proprio stato. Le transizioni hanno condizioni precise su tempo, movimento e zona del corpo — e ogni stato può tornare a IDLE se il gesto si rivela innocuo.</p>
+  </div>
+
+  <div class="sm-diagram">
+    <div class="sm-node">IDLE</div>
+    <div class="sm-link">→</div>
+    <div class="sm-node">HAND_IN_SHELF</div>
+    <div class="sm-link">→</div>
+    <div class="sm-node">GRABBED</div>
+    <div class="sm-link">→</div>
+    <div class="sm-node">OBJECT_HIDDEN</div>
+    <div class="sm-link">→</div>
+    <div class="sm-node alert">SUSPECTED</div>
+  </div>
+  <div class="sm-reset">
+    <span class="sm-reset-tag">[SHELF-BACK]</span> se la mano rientra nella ROI in qualsiasi momento → reset a IDLE, zero falsi positivi sul "prendere e rimettere a posto"
+  </div>
+
+  <div class="trigger-grid">
+    <div class="trigger-card">
+      <div class="trigger-id">HIDDEN-A</div>
+      <p>Oggetto sparisce visivamente per più di 1s dopo la presa</p>
+    </div>
+    <div class="trigger-card">
+      <div class="trigger-id">HIDDEN-B</div>
+      <p>Mano va al corpo per ≥10 frame e l'oggetto, visto prima, sparisce</p>
+    </div>
+    <div class="trigger-card">
+      <div class="trigger-id">HIDDEN-C</div>
+      <p>Persona si allontana &gt;80px portando l'oggetto con sé</p>
+    </div>
+    <div class="trigger-card">
+      <div class="trigger-id">HIDDEN-F1</div>
+      <p>Nascondimento rapido in tasca petto (chest ≥20f, tempo &gt;2s)</p>
+    </div>
+    <div class="trigger-card">
+      <div class="trigger-id">HIDDEN-F2</div>
+      <p>Nascondimento sotto maglia (chest ≥30f, body ≥8f, tempo &gt;3s)</p>
+    </div>
+    <div class="trigger-card filter">
+      <div class="trigger-id">+ filtri anti falsi-positivi</div>
+      <p>OVERLAP (persone sovrapposte, IoU&gt;0.35) e CROWDED (≥6 persone) riducono i trigger inaffidabili</p>
+    </div>
+  </div>
+</section>
+
+<section id="test">
+  <div class="section-head">
+    <div class="eyebrow"><span class="bar"></span>VALIDAZIONE</div>
+    <h2>Test di stabilità: 60 minuti continui</h2>
+    <p class="section-desc">Un sistema "funzionante sulla carta" e uno "testato per un'ora di fila" sono cose diverse. Questi i numeri misurati durante un run continuo con una camera attiva.</p>
+  </div>
+
+  <div class="test-grid">
+    <div class="test-metric"><div class="tv">443→485 MB</div><div class="tk">RAM backend (+10%, stabile)</div></div>
+    <div class="test-metric"><div class="tv">50-90%</div><div class="tk">CPU idle</div></div>
+    <div class="test-metric"><div class="tv">18/18</div><div class="tk">eventi salvati e in DB, match 100%</div></div>
+    <div class="test-metric"><div class="tv">18/18</div><div class="tk">video riproducibili (codec avc1)</div></div>
+    <div class="test-metric"><div class="tv">2</div><div class="tk">interruzioni stream, entrambe recuperate</div></div>
+    <div class="test-metric"><div class="tv">0</div><div class="tk">crash registrati</div></div>
+  </div>
+</section>
+
+<section id="limiti">
+  <div class="section-head">
+    <div class="eyebrow"><span class="bar"></span>ONESTÀ TECNICA</div>
+    <h2>Limiti dichiarati, non nascosti</h2>
+    <p class="section-desc">Un sistema che dichiara esplicitamente quando non funziona è più affidabile di uno che promette il 100%. Questi sono i limiti reali riscontrati durante lo sviluppo e il test.</p>
+  </div>
+  <div class="limit-grid">
+    <div class="limit-card">
+      <h4>Dataset generico</h4>
+      <p>YOLO pre-addestrato su COCO riconosce categorie generiche (bottiglia, cellulare), non SKU specifici. Serve un dataset retail custom per il fine-tuning.</p>
+    </div>
+    <div class="limit-card">
+      <h4>Distanza camera-scaffale</h4>
+      <p>Ottimo entro 2m, buono fino a 3m, mediocre fino a 5m, inaffidabile oltre. Oggetti piccoli a distanza occupano pochi pixel.</p>
+    </div>
+    <div class="limit-card">
+      <h4>Affollamento scena</h4>
+      <p>Con 6+ persone simultanee il tracking degrada. La modalità "crowded" mitiga monitorando solo chi ha la mano in ROI, ma non risolve del tutto.</p>
+    </div>
+    <div class="limit-card">
+      <h4>Nessuna re-identificazione</h4>
+      <p>Una persona che passa da una camera all'altra viene trackata come due individui distinti — serve un modello di re-ID, non implementato.</p>
+    </div>
+  </div>
+</section>
+
+<section id="confronto">
+  <div class="section-head">
+    <div class="eyebrow"><span class="bar"></span>POSIZIONAMENTO</div>
+    <h2>Dove si colloca rispetto ai sistemi enterprise</h2>
+    <p class="section-desc">Securetail non compete con sistemi come Everseen o StopLift — è pensato per un segmento che quei sistemi non possono permettersi di servire.</p>
+  </div>
+  <div class="compare-table">
+    <div class="ct-row ct-head">
+      <div></div><div>Securetail</div><div>Sistemi enterprise</div>
+    </div>
+    <div class="ct-row"><div>Target</div><div>Piccoli/medi negozi</div><div>GDO, grandi catene</div></div>
+    <div class="ct-row"><div>Costo totale</div><div class="hl-cell">&lt; 1.000€</div><div>50.000–500.000€</div></div>
+    <div class="ct-row"><div>Modello AI</div><div>YOLO pre-COCO</div><div>Dataset retail custom</div></div>
+    <div class="ct-row"><div>Accuracy stimata</div><div>60-75%</div><div>90-95%</div></div>
+    <div class="ct-row"><div>Hardware</div><div>Mini-PC consumer</div><div>Server GPU dedicati</div></div>
+    <div class="ct-row"><div>Privacy default</div><div class="hl-cell">On-premise</div><div>Spesso cloud proprietario</div></div>
+  </div>
+</section>
+
+<section id="ruoli">
+  <div class="section-head">
+    <div class="eyebrow"><span class="bar"></span>CONTROLLO ACCESSI</div>
+    <h2>Permessi applicati su due fronti</h2>
+    <p class="section-desc">I ruoli non sono solo estetici: l'interfaccia si adatta lato frontend, ma le API rifiutano comunque le operazioni non autorizzate lato backend (HTTP 403).</p>
+  </div>
+  <div class="roles">
+    <div class="role-card admin">
+      <h3>◆ ADMIN</h3>
+      <ul>
+        <li>Gestisce le camere collegate al sistema</li>
+        <li>Disegna le ROI direttamente da dashboard</li>
+        <li>Elimina e modifica le etichette degli eventi</li>
+      </ul>
+    </div>
+    <div class="role-card viewer">
+      <h3>◇ VIEWER</h3>
+      <ul>
+        <li>Dashboard e statistiche in sola lettura</li>
+        <li>Live monitor senza controllo su camere/detection</li>
+        <li>Cronologia eventi consultabile, non modificabile</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+<section id="repo">
+  <div class="section-head">
+    <div class="eyebrow"><span class="bar"></span>TROUBLESHOOTING REALE</div>
+    <h2>Problemi affrontati durante lo sviluppo</h2>
+    <p class="section-desc">Una piccola selezione dei problemi di sistema reali risolti — perché un progetto funzionante si giudica anche da quanto regge fuori dal caso ideale.</p>
+  </div>
+  <div class="trouble-list">
+    <div class="trouble-item">
+      <div class="trouble-q">⚠ Il video dell'evento non si riproduce nel browser</div>
+      <div class="trouble-a">OpenCV su Linux salva spesso in codec mp4v, non compatibile coi browser. Risolto con post-transcoding automatico a H264 via FFmpeg nel modulo eventi.</div>
+    </div>
+    <div class="trouble-item">
+      <div class="trouble-q">⚠ FFmpeg dà "Connection refused" dal PC client</div>
+      <div class="trouble-a">Il backend non era ancora in ascolto sulla porta TCP. Risolto definendo un ordine di avvio rigoroso tra backend, dashboard e sender.</div>
+    </div>
+    <div class="trouble-item">
+      <div class="trouble-q">⚠ Dashboard non raggiungibile da rete esterna</div>
+      <div class="trouble-a">Streamlit va avviato con --server.address 0.0.0.0, non su localhost, oltre ad aprire la porta sul firewall del server.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:40px; display:flex; gap:14px; flex-wrap:wrap;">
+    <a href="#" class="btn btn-primary">Codice su GitHub (privato — su richiesta) →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="f-left">SECURETAIL · PROGETTO SPERIMENTALE DI STAGE · 2026</div>
+  <div class="f-right">
+    <a href="https://github.com/matteohu-1996">GitHub</a>
+    <a href="https://www.linkedin.com/in/matteo-hu-a46147213/">LinkedIn</a>
+    <a href="#">Email: matteohu1996@gmail.com</a>
+    <a href="#">Telefono: 3792056985</a>
+  </div>
+</footer>
+
+<script>
+  function tick(){
+    const el = document.getElementById('clock');
+    if(!el) return;
+    const d = new Date();
+    el.textContent = d.toTimeString().slice(0,8);
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+
+</body>
+</html>

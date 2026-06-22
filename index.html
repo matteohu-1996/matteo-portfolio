@@ -338,29 +338,28 @@
   <div class="topbar">
     <div class="brand"><span class="dot"></span>SECURETAIL — CASE STUDY</div>
     <nav>
-      <a href="#screenshot">Screenshot</a>
-      <a href="#architettura">Architettura</a>
-      <a href="#pipeline">Pipeline AI</a>
-      <a href="#statemachine">State Machine</a>
-    <a href="#test">Test</a>
-    <a href="#limiti">Limiti</a>
-  </nav>
-</div>
+      <a href="#screenshot">Schermate</a>
+      <a href="#architettura">Come funziona</a>
+      <a href="#pipeline">Intelligenza artificiale</a>
+      <a href="#test">Risultati</a>
+      <a href="#limiti">Limiti</a>
+    </nav>
+  </div>
 
 <section class="hero">
   <div>
-    <div class="hero-eyebrow"><span class="bar"></span>PROGETTO Sperimentale DI STAGE  — COMPUTER VISION</div>
-    <h1 class="hero-title">Securetail - <br> un sistema di video-sorveglianza anti-taccheggio</h1>
-    <p class="hero-desc">Securetail è un sistema di video-sorveglianza intelligente che combina motion detection e pose estimation per generare alert solo quando c'è davvero una persona vicino allo scaffale sorvegliato — non a ogni variazione di luce o movimento d'aria.</p>
+    <div class="hero-eyebrow"><span class="bar"></span>PROGETTO STAGE IN FASE SPERIMENTALE — 8 SETTIMANE · ~300 ORE</div>
+     <h1 class="hero-title">Securetail - Un sistema anti-taccheggio costruito da zero <span class="hl">durante il periodo stage.</span></h1>
+    <p class="hero-desc">Securetail è un sistema di videosorveglianza anti-taccheggio che monitora in tempo reale le zone sensibili di un negozio. L'allarme scatta solo quando una persona entra davvero vicino allo scaffale sorvegliato — non a ogni ombra, cambio di luce o passante casuale.</p>
     <div class="hero-cta">
-      <a href="#pipeline" class="btn btn-primary">Vedi la pipeline AI →</a>
+      <a href="#pipeline" class="btn btn-primary">Come funziona l'AI →</a>
       <a href="#repo" class="btn btn-ghost">Codice sorgente</a>
     </div>
     <div class="hero-stats">
-      <div class="hstat"><div class="n">280h</div><div class="l">7 settimane full-time</div></div>
-      <div class="hstat"><div class="n">~6000</div><div class="l">righe Python</div></div>
-      <div class="hstat"><div class="n">-85%</div><div class="l">carico CPU col gating</div></div>
-      <div class="hstat"><div class="n">5</div><div class="l">trigger di furto distinti</div></div>
+      <div class="hstat"><div class="n">300h</div><div class="l">8 settimane di lavoro</div></div>
+      <div class="hstat"><div class="n">~6000</div><div class="l">righe di codice Python</div></div>
+      <div class="hstat"><div class="n">30 FPS</div><div class="l">analisi in tempo reale</div></div>
+      <div class="hstat"><div class="n">95-100%</div><div class="l">scenari testati con successo</div></div>
     </div>
   </div>
   
@@ -420,238 +419,236 @@
 
 <section id="architettura">
   <div class="section-head">
-    <div class="eyebrow"><span class="bar"></span>ARCHITETTURA</div>
-    <h2>Tre processi, tre macchine, un flusso video</h2>
-    <p class="section-desc">Il sistema è pensato per un caso reale: la webcam è collegata a un PC qualsiasi nel negozio, mentre il backend e la dashboard girano su un server remoto. I tre moduli comunicano via TCP/FFmpeg e REST API.</p>
+    <div class="eyebrow"><span class="bar"></span>COME È COSTRUITO</div>
+    <h2>Tre parti che lavorano insieme</h2>
+    <p class="section-desc">Il sistema è pensato per un caso reale: la webcam è collegata a un normale PC nel negozio, mentre il cervello del sistema gira su un server in cloud. La dashboard si apre da qualsiasi browser, da qualsiasi dispositivo.</p>
   </div>
   <div class="arch-grid">
     <div class="arch-card">
-      <div class="arch-num">01 · SERVER</div>
-      <h3>Backend</h3>
-      <p>FastAPI + vision engine. Riceve lo stream video, esegue la detection a due livelli, gestisce eventi e persistenza su database.</p>
-      <div class="tag-row"><span class="tag">main.py</span><span class="tag">FastAPI</span><span class="tag">MySQL</span></div>
+      <div class="arch-num">01 · PC DEL NEGOZIO</div>
+      <h3>Cattura video</h3>
+      <p>Un piccolo programma gira sul PC dove è collegata la webcam, la riconosce in automatico e trasmette il video via internet al server. Funziona su Windows, macOS e Linux senza configurazioni particolari.</p>
+      <div class="tag-row"><span class="tag">Windows / macOS / Linux</span><span class="tag">FFmpeg</span></div>
     </div>
     <div class="arch-card">
-      <div class="arch-num">02 · SERVER</div>
-      <h3>Dashboard</h3>
-      <p>Interfaccia Streamlit per il monitoraggio live, la cronologia eventi, la configurazione delle ROI e la gestione permessi utente.</p>
-      <div class="tag-row"><span class="tag">app.py</span><span class="tag">Streamlit</span><span class="tag">RBAC</span></div>
+      <div class="arch-num">02 · SERVER IN CLOUD</div>
+      <h3>Cervello del sistema</h3>
+      <p>Riceve il video in diretta, lo analizza con l'intelligenza artificiale, decide se qualcosa è sospetto e salva tutto in un database. È il componente più complesso: gestisce eventi, video, utenti e la logica di detection.</p>
+      <div class="tag-row"><span class="tag">FastAPI</span><span class="tag">MySQL</span><span class="tag">Ubuntu Linux</span></div>
     </div>
     <div class="arch-card">
-      <div class="arch-num">03 · CLIENT</div>
-      <h3>Sender</h3>
-      <p>Script cross-platform che gira sul PC con la webcam, la rileva automaticamente e invia il flusso al server via TCP/FFmpeg.</p>
-      <div class="tag-row"><span class="tag">start_camera.py</span><span class="tag">Win/macOS/Linux</span><span class="tag">RTSP-ready</span></div>
+      <div class="arch-num">03 · BROWSER</div>
+      <h3>Dashboard web</h3>
+      <p>Una pagina web accessibile da qualsiasi browser: si vedono le camere in diretta, si rivedono i video degli eventi registrati, si disegnano le zone da sorvegliare e si gestiscono gli utenti.</p>
+      <div class="tag-row"><span class="tag">Streamlit</span><span class="tag">Accesso da browser</span></div>
     </div>
   </div>
 </section>
 
 <section id="pipeline">
   <div class="section-head">
-    <div class="eyebrow"><span class="bar"></span>IL CUORE TECNICO</div>
-    <h2>Dal pixel al furto: tre stadi di ragionamento</h2>
-    <p class="section-desc">Un classificatore "furto sì/no" su singolo frame non funziona: YOLO non capisce sequenze temporali. La soluzione è una pipeline che sale di livello solo quando necessario, fino a una state machine che ragiona per stati persistenti.</p>
+    <div class="eyebrow"><span class="bar"></span>L'INTELLIGENZA ARTIFICIALE</div>
+    <h2>Prima cerca il movimento, poi capisce cosa sta succedendo</h2>
+    <p class="section-desc">Il sistema usa un approccio a due filtri che permette di analizzare 30 immagini al secondo su un normale PC, senza schede grafiche costose. La chiave è non sprecare risorse quando non serve.</p>
   </div>
 
   <div class="pipeline pipeline-3">
     <div class="pl-stage l1">
-      <div class="stage-eyebrow">Stadio 1 · sempre attivo</div>
-      <h4>Motion Detection</h4>
-      <p>Background subtraction OpenCV. Filtra le scene statiche prima che tocchino qualsiasi rete neurale.</p>
+      <div class="stage-eyebrow">Filtro 1 · sempre attivo</div>
+      <h4>Rilevazione del movimento</h4>
+      <p>Un algoritmo leggero confronta ogni immagine con la scena "ferma" memorizzata in precedenza. Se non c'è nessun movimento — scaffale immobile, negozio vuoto — il sistema non fa nient'altro e non consuma risorse.</p>
       <div class="metric-grid">
-        <div class="metric"><div class="v">1800 px²</div><div class="k">area minima movimento</div></div>
-        <div class="metric"><div class="v">400%→50%</div><div class="k">CPU idle misurata</div></div>
+        <div class="metric"><div class="v">~90%</div><div class="k">immagini scartate subito</div></div>
+        <div class="metric"><div class="v">35-45%</div><div class="k">uso CPU in condizioni normali</div></div>
       </div>
     </div>
     <div class="pl-arrow"><svg viewBox="0 0 40 20"><line x1="0" y1="10" x2="32" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="24,4 32,10 24,16" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div>
     <div class="pl-stage l2">
-      <div class="stage-eyebrow">Stadio 2 · si attiva se serve</div>
-      <h4>YOLO Pose + Object</h4>
-      <p>Due modelli paralleli: pose stima keypoint (mani/polsi), object riconosce gli oggetto sullo scaffale. Insieme correlano "questa mano ha preso quella bottiglia".</p>
+      <div class="stage-eyebrow">Filtro 2 · si attiva solo se c'è movimento</div>
+      <h4>Riconoscimento persona</h4>
+      <p>Solo quando c'è del movimento, si attiva una rete neurale (YOLO11s-pose) che verifica se il movimento è causato da una persona reale, dove si trova rispetto allo scaffale sorvegliato, e come è posizionato il suo corpo.</p>
       <div class="metric-grid">
-        <div class="metric"><div class="v">0.50</div><div class="k">soglia confidenza persona</div></div>
-        <div class="metric"><div class="v">2 modelli</div><div class="k">pose + object in parallelo</div></div>
+        <div class="metric"><div class="v">27-30 ms</div><div class="k">tempo di analisi per immagine</div></div>
+        <div class="metric"><div class="v">30 FPS</div><div class="k">analisi in tempo reale</div></div>
       </div>
     </div>
     <div class="pl-arrow"><svg viewBox="0 0 40 20"><line x1="0" y1="10" x2="32" y2="10" stroke="currentColor" stroke-width="1.5"/><polyline points="24,4 32,10 24,16" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></div>
     <div class="pl-stage l3">
-      <div class="stage-eyebrow">Stadio 3 · decide se è furto</div>
-      <h4>State Machine</h4>
-      <p>5 stati persistenti per persona trackata, non un classificatore a frame singolo. Distingue "prendere e rimettere" da "prendere e nascondere".</p>
+      <div class="stage-eyebrow">Decisione finale</div>
+      <h4>È davvero sospetto?</h4>
+      <p>Il sistema non giudica un singolo momento isolato: tiene traccia di quello che fa ogni persona nel tempo, e distingue chi prende un prodotto e lo rimette a posto da chi lo nasconde e se ne va.</p>
       <div class="metric-grid">
-        <div class="metric"><div class="v">5 stati</div><div class="k">IDLE → SUSPECTED</div></div>
-        <div class="metric"><div class="v">5 trigger</div><div class="k">scenari di furto coperti</div></div>
+        <div class="metric"><div class="v">5 sec</div><div class="k">video pre-evento salvato</div></div>
+        <div class="metric"><div class="v">95-100%</div><div class="k">scenari testati con successo</div></div>
       </div>
     </div>
   </div>
 
   <div class="gate-note">
-    <b>Perché conviene:</b> il gating a motion riduce il carico CPU dell'85% circa (misurato: da 400% a 50% in idle su i7), mantenendo il sistema utilizzabile su hardware consumer senza GPU dedicata.
+    <b>Il video pre-evento:</b> il sistema tiene sempre in memoria gli ultimi 5 secondi di video. Quando scatta l'allarme, il video registrato include anche quello che è successo <em>prima</em> dell'azione — non solo durante. Per chi revisiona l'evento, questo fa la differenza tra capire e non capire la dinamica.
   </div>
 </section>
 
 <section id="statemachine">
   <div class="section-head">
-    <div class="eyebrow"><span class="bar"></span>LOGICA DI DECISIONE</div>
-    <h2>Una state machine per persona, non un frame isolato</h2>
-    <p class="section-desc">Ogni persona trackata nella scena ha un proprio stato. Le transizioni hanno condizioni precise su tempo, movimento e zona del corpo — e ogni stato può tornare a IDLE se il gesto si rivela innocuo.</p>
+    <div class="eyebrow"><span class="bar"></span>INTELLIGENZA NEL TEMPO</div>
+    <h2>Non un singolo fotogramma, ma una sequenza di azioni</h2>
+    <p class="section-desc">L'errore più comune nei sistemi di videosorveglianza è giudicare ogni momento come se fosse isolato. Securetail invece segue cosa fa ogni persona nel corso del tempo: un'azione sospetta deve costruirsi in una sequenza logica prima che scatti l'allarme.</p>
   </div>
 
   <div class="sm-diagram">
-    <div class="sm-node">IDLE</div>
+    <div class="sm-node">Persona entra nella zona</div>
     <div class="sm-link">→</div>
-    <div class="sm-node">HAND_IN_SHELF</div>
+    <div class="sm-node">Mano vicino allo scaffale</div>
     <div class="sm-link">→</div>
-    <div class="sm-node">GRABBED</div>
+    <div class="sm-node">Oggetto preso</div>
     <div class="sm-link">→</div>
-    <div class="sm-node">OBJECT_HIDDEN</div>
+    <div class="sm-node">Oggetto nascosto</div>
     <div class="sm-link">→</div>
-    <div class="sm-node alert">SUSPECTED</div>
+    <div class="sm-node alert">ALLARME</div>
   </div>
   <div class="sm-reset">
-    <span class="sm-reset-tag">[SHELF-BACK]</span> se la mano rientra nella ROI in qualsiasi momento → reset a IDLE, zero falsi positivi sul "prendere e rimettere a posto"
+    <span class="sm-reset-tag">NESSUN ALLARME</span> se la persona rimette l'oggetto a posto, il sistema lo riconosce e resetta — nessun falso allarme su chi "guarda e non tocca" o cambia idea
   </div>
 
   <div class="trigger-grid">
     <div class="trigger-card">
-      <div class="trigger-id">HIDDEN-A</div>
-      <p>Oggetto sparisce visivamente per più di 1s dopo la presa</p>
+      <div class="trigger-id">Oggetto sparito</div>
+      <p>L'oggetto era visibile sullo scaffale e ora non si vede più dopo che la persona ha allungato la mano</p>
     </div>
     <div class="trigger-card">
-      <div class="trigger-id">HIDDEN-B</div>
-      <p>Mano va al corpo per ≥10 frame e l'oggetto, visto prima, sparisce</p>
+      <div class="trigger-id">Mano verso il corpo</div>
+      <p>La mano si sposta verso il corpo mentre l'oggetto scompare dalla scena — gesto tipico di chi nasconde qualcosa</p>
     </div>
     <div class="trigger-card">
-      <div class="trigger-id">HIDDEN-C</div>
-      <p>Persona si allontana &gt;80px portando l'oggetto con sé</p>
+      <div class="trigger-id">Persona che si allontana</div>
+      <p>La persona si allontana dallo scaffale portando con sé l'oggetto che aveva preso</p>
     </div>
     <div class="trigger-card">
-      <div class="trigger-id">HIDDEN-F1</div>
-      <p>Nascondimento rapido in tasca petto (chest ≥20f, tempo &gt;2s)</p>
+      <div class="trigger-id">Nascondimento rapido</div>
+      <p>Movimento rapido verso la tasca o il petto, con scomparsa simultanea dell'oggetto</p>
     </div>
     <div class="trigger-card">
-      <div class="trigger-id">HIDDEN-F2</div>
-      <p>Nascondimento sotto maglia (chest ≥30f, body ≥8f, tempo &gt;3s)</p>
+      <div class="trigger-id">Nascondimento sotto i vestiti</div>
+      <p>Sequenza di movimenti coerenti con il nascondere qualcosa sotto la maglia o la giacca</p>
     </div>
     <div class="trigger-card filter">
-      <div class="trigger-id">+ filtri anti falsi-positivi</div>
-      <p>OVERLAP (persone sovrapposte, IoU&gt;0.35) e CROWDED (≥6 persone) riducono i trigger inaffidabili</p>
+      <div class="trigger-id">Protezione dai falsi allarmi</div>
+      <p>Quando ci sono molte persone vicine o sovrapposte, il sistema riduce automaticamente la sensibilità per evitare errori</p>
     </div>
   </div>
 </section>
 
 <section id="test">
   <div class="section-head">
-    <div class="eyebrow"><span class="bar"></span>VALIDAZIONE</div>
-    <h2>Test di stabilità: 60 minuti continui</h2>
-    <p class="section-desc">Un sistema "funzionante sulla carta" e uno "testato per un'ora di fila" sono cose diverse. Questi i numeri misurati durante un run continuo con una camera attiva.</p>
+    <div class="eyebrow"><span class="bar"></span>RISULTATI</div>
+    <h2>Il sistema testato in condizioni reali</h2>
+    <p class="section-desc">Non basta che un sistema "funzioni in teoria". Questi sono i risultati misurati durante i test, inclusi scenari volutamente difficili come luci che sfarfallano o persone che si muovono velocemente.</p>
   </div>
 
   <div class="test-grid">
-    <div class="test-metric"><div class="tv">443→485 MB</div><div class="tk">RAM backend (+10%, stabile)</div></div>
-    <div class="test-metric"><div class="tv">50-90%</div><div class="tk">CPU idle</div></div>
-    <div class="test-metric"><div class="tv">18/18</div><div class="tk">eventi salvati e in DB, match 100%</div></div>
-    <div class="test-metric"><div class="tv">18/18</div><div class="tk">video riproducibili (codec avc1)</div></div>
-    <div class="test-metric"><div class="tv">2</div><div class="tk">interruzioni stream, entrambe recuperate</div></div>
-    <div class="test-metric"><div class="tv">0</div><div class="tk">crash registrati</div></div>
+    <div class="test-metric"><div class="tv">30 FPS</div><div class="tk">analisi fluida in tempo reale su processore i7 normale</div></div>
+    <div class="test-metric"><div class="tv">27-30 ms</div><div class="tk">tempo di risposta per ogni immagine analizzata</div></div>
+    <div class="test-metric"><div class="tv">35-45%</div><div class="tk">uso del processore in condizioni normali</div></div>
+    <div class="test-metric"><div class="tv">100%</div><div class="tk">luci che sfarfallano senza persone: nessun allarme</div></div>
+    <div class="test-metric"><div class="tv">100%</div><div class="tk">persone fuori dalla zona sorvegliata: nessun allarme</div></div>
+    <div class="test-metric"><div class="tv">95%</div><div class="tk">persone che si muovono velocemente: allarme corretto</div></div>
   </div>
 </section>
 
 <section id="limiti">
   <div class="section-head">
-    <div class="eyebrow"><span class="bar"></span>ONESTÀ TECNICA</div>
-    <h2>Limiti dichiarati, non nascosti</h2>
-    <p class="section-desc">Un sistema che dichiara esplicitamente quando non funziona è più affidabile di uno che promette il 100%. Questi sono i limiti reali riscontrati durante lo sviluppo e il test.</p>
+    <div class="eyebrow"><span class="bar"></span>ONESTÀ SUL PROGETTO</div>
+    <h2>Cosa funziona bene e cosa no ancora</h2>
+    <p class="section-desc">Securetail è funzionante e usabile per dimostrazioni e test, ma è ancora un prototipo sperimentale — non un prodotto finito. Dichiarare esplicitamente i limiti è parte integrante di un lavoro serio.</p>
   </div>
   <div class="limit-grid">
     <div class="limit-card">
-      <h4>Dataset generico</h4>
-      <p>YOLO pre-addestrato su COCO riconosce categorie generiche (bottiglia, cellulare), non SKU specifici. Serve un dataset retail custom per il fine-tuning.</p>
+      <h4>I falsi allarmi non sono azzerati</h4>
+      <p>Un manichino, un riflesso su una vetrina, o un cliente che passa per un motivo legittimo possono ancora far scattare un allarme. Eliminarlo del tutto richiederebbe addestrare l'AI su video reali di furti, con una fase di calibrazione per ogni negozio.</p>
     </div>
     <div class="limit-card">
-      <h4>Distanza camera-scaffale</h4>
-      <p>Ottimo entro 2m, buono fino a 3m, mediocre fino a 5m, inaffidabile oltre. Oggetti piccoli a distanza occupano pochi pixel.</p>
+      <h4>Testato con una camera alla volta</h4>
+      <p>Tutti i test sono stati fatti con una sola webcam USB. Aggiungere una seconda o terza camera richiederebbe hardware più potente o una scheda grafica dedicata. La gestione multi-camera è prevista nel codice, ma non è mai stata testata nella pratica.</p>
     </div>
     <div class="limit-card">
-      <h4>Affollamento scena</h4>
-      <p>Con 6+ persone simultanee il tracking degrada. La modalità "crowded" mitiga monitorando solo chi ha la mano in ROI, ma non risolve del tutto.</p>
+      <h4>La distanza conta</h4>
+      <p>Il sistema funziona bene entro 2-3 metri dalla camera. Oltre i 4-5 metri, oggetti piccoli occupano troppo pochi pixel per essere riconosciuti in modo affidabile.</p>
     </div>
     <div class="limit-card">
-      <h4>Nessuna re-identificazione</h4>
-      <p>Una persona che passa da una camera all'altra viene trackata come due individui distinti — serve un modello di re-ID, non implementato.</p>
+      <h4>Ancora da ottimizzare per uso prolungato</h4>
+      <p>In un caso isolato, dopo diverse ore di funzionamento continuato il server ha avuto un rallentamento importante. Non si è ripetuto, ma suggerisce che un utilizzo 24/7 richiederebbe ulteriori ottimizzazioni prima di andare in produzione.</p>
     </div>
   </div>
 </section>
 
 <section id="confronto">
   <div class="section-head">
-    <div class="eyebrow"><span class="bar"></span>POSIZIONAMENTO</div>
-    <h2>Dove si colloca rispetto ai sistemi enterprise</h2>
-    <p class="section-desc">Securetail non compete con sistemi come Everseen o StopLift — è pensato per un segmento che quei sistemi non possono permettersi di servire.</p>
+    <div class="eyebrow"><span class="bar"></span>A CHI È RIVOLTO</div>
+    <h2>Non compete con i grandi sistemi — serve un mercato diverso</h2>
+    <p class="section-desc">I sistemi di videosorveglianza enterprise costano decine o centinaia di migliaia di euro e richiedono hardware dedicato. Securetail nasce per chi non può o non vuole spendere così tanto.</p>
   </div>
   <div class="compare-table">
     <div class="ct-row ct-head">
       <div></div><div>Securetail</div><div>Sistemi enterprise</div>
     </div>
-    <div class="ct-row"><div>Target</div><div>Piccoli/medi negozi</div><div>GDO, grandi catene</div></div>
-    <div class="ct-row"><div>Costo totale</div><div class="hl-cell">&lt; 1.000€</div><div>50.000–500.000€</div></div>
-    <div class="ct-row"><div>Modello AI</div><div>YOLO pre-COCO</div><div>Dataset retail custom</div></div>
-    <div class="ct-row"><div>Accuracy stimata</div><div>60-75%</div><div>90-95%</div></div>
-    <div class="ct-row"><div>Hardware</div><div>Mini-PC consumer</div><div>Server GPU dedicati</div></div>
-    <div class="ct-row"><div>Privacy default</div><div class="hl-cell">On-premise</div><div>Spesso cloud proprietario</div></div>
+    <div class="ct-row"><div>A chi si rivolge</div><div>Piccoli e medi negozi</div><div>Grandi catene e GDO</div></div>
+    <div class="ct-row"><div>Costo stimato</div><div class="hl-cell">&lt; 1.000€</div><div>50.000–500.000€</div></div>
+    <div class="ct-row"><div>Hardware richiesto</div><div>PC consumer normale</div><div>Server con GPU dedicata</div></div>
+    <div class="ct-row"><div>Precisione stimata</div><div>60-75%</div><div>90-95%</div></div>
+    <div class="ct-row"><div>I dati restano</div><div class="hl-cell">Sul tuo server (privacy)</div><div>Spesso su cloud del fornitore</div></div>
   </div>
 </section>
 
 <section id="ruoli">
   <div class="section-head">
-    <div class="eyebrow"><span class="bar"></span>CONTROLLO ACCESSI</div>
-    <h2>Permessi applicati su due fronti</h2>
-    <p class="section-desc">I ruoli non sono solo estetici: l'interfaccia si adatta lato frontend, ma le API rifiutano comunque le operazioni non autorizzate lato backend (HTTP 403).</p>
+    <div class="eyebrow"><span class="bar"></span>CHI PUÒ FARE COSA</div>
+    <h2>Due livelli di accesso, sicurezza su due fronti</h2>
+    <p class="section-desc">I permessi non sono solo un blocco nell'interfaccia grafica: anche il server rifiuta le operazioni non autorizzate, quindi non si può aggirare il sistema aprendo il codice o le API direttamente.</p>
   </div>
   <div class="roles">
     <div class="role-card admin">
-      <h3>◆ ADMIN</h3>
+      <h3>◆ AMMINISTRATORE</h3>
       <ul>
         <li>Gestisce le camere collegate al sistema</li>
-        <li>Disegna le ROI direttamente da dashboard</li>
-        <li>Elimina e modifica le etichette degli eventi</li>
+        <li>Disegna le zone da sorvegliare direttamente sullo schermo</li>
+        <li>Elimina eventi e modifica le etichette</li>
       </ul>
     </div>
     <div class="role-card viewer">
-      <h3>◇ VIEWER</h3>
+      <h3>◇ OPERATORE</h3>
       <ul>
-        <li>Dashboard e statistiche in sola lettura</li>
-        <li>Live monitor senza controllo su camere/detection</li>
-        <li>Cronologia eventi consultabile, non modificabile</li>
+        <li>Vede la dashboard e le statistiche, senza poter modificare nulla</li>
+        <li>Guarda le camere in diretta senza poterle spegnere</li>
+        <li>Consulta la cronologia degli eventi senza poterli cancellare</li>
       </ul>
     </div>
   </div>
 </section>
 
-
 <section id="repo">
   <div class="section-head">
-    <div class="eyebrow"><span class="bar"></span>TROUBLESHOOTING REALE</div>
-    <h2>Problemi affrontati durante lo sviluppo</h2>
-    <p class="section-desc">Una piccola selezione dei problemi di sistema reali risolti — perché un progetto funzionante si giudica anche da quanto regge fuori dal caso ideale.</p>
+    <div class="eyebrow"><span class="bar"></span>PROBLEMI RISOLTI</div>
+    <h2>Tre cose che non funzionavano e come le ho risolte</h2>
+    <p class="section-desc">Un progetto funzionante non è solo codice che gira: è anche la capacità di diagnosticare e risolvere i problemi che si presentano fuori dal caso ideale.</p>
   </div>
   <div class="trouble-list">
     <div class="trouble-item">
-      <div class="trouble-q">⚠ Il video dell'evento non si riproduce nel browser</div>
-      <div class="trouble-a">OpenCV su Linux salva spesso in codec mp4v, non compatibile coi browser. Risolto con post-transcoding automatico a H264 via FFmpeg nel modulo eventi.</div>
+      <div class="trouble-q">⚠ I video registrati non si riproducevano nel browser</div>
+      <div class="trouble-a">Il software di analisi video salvava i file in un formato (mp4v) che i browser non supportano. Risolto aggiungendo una conversione automatica al formato H264 ogni volta che viene registrato un evento — senza che l'operatore debba fare nulla.</div>
     </div>
     <div class="trouble-item">
-      <div class="trouble-q">⚠ FFmpeg dà "Connection refused" dal PC client</div>
-      <div class="trouble-a">Il backend non era ancora in ascolto sulla porta TCP. Risolto definendo un ordine di avvio rigoroso tra backend, dashboard e sender.</div>
+      <div class="trouble-q">⚠ La trasmissione video dava "connessione rifiutata"</div>
+      <div class="trouble-a">Il PC del negozio cercava di inviare il video prima che il server fosse pronto a riceverlo. Risolto definendo un ordine preciso di avvio dei tre componenti del sistema.</div>
     </div>
     <div class="trouble-item">
-      <div class="trouble-q">⚠ Dashboard non raggiungibile da rete esterna</div>
-      <div class="trouble-a">Streamlit va avviato con --server.address 0.0.0.0, non su localhost, oltre ad aprire la porta sul firewall del server.</div>
+      <div class="trouble-q">⚠ La dashboard non era raggiungibile da fuori la rete locale</div>
+      <div class="trouble-a">Il server web era configurato per rispondere solo alle connessioni locali. Risolto modificando la configurazione di avvio e aprendo la porta corretta sul firewall del server cloud.</div>
     </div>
   </div>
 
   <div style="margin-top:40px; display:flex; gap:14px; flex-wrap:wrap;">
-    <a href="#" class="btn btn-primary">Codice su GitHub (privato — su richiesta) →</a>
+    <a href="https://github.com/matteohu-1996" class="btn btn-primary">Codice su GitHub (privato — su richiesta) →</a>
   </div>
 </section>
 
